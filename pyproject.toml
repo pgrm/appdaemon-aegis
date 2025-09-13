@@ -5,17 +5,16 @@ description = "Strong and reliable automations for AppDaemon."
 authors = ["Jules <jules@example.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "appdaemon_aegis", from = "src" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-appdaemon = "4.5.11"
+appdaemon = "~4.5.11"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.4"
-
-[tool.poetry.packages]
-include = "appdaemon_aegis"
-from = "src"
 
 [build-system]
 requires = ["poetry-core"]
