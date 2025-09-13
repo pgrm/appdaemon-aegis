@@ -11,10 +11,11 @@ from logging import Logger
 from typing import Any, Literal, TypeVar
 
 from appdaemon.adapi import ADAPI
-from appdaemon.events import EventCallback
+from typing import TYPE_CHECKING
 from appdaemon.plugins.hass.hassapi import Hass
-from appdaemon.state import StateCallback
-
+if TYPE_CHECKING:
+    from appdaemon.events import EventCallback
+    from appdaemon.state import StateCallback
 T = TypeVar("T")
 
 
