@@ -14,6 +14,7 @@ from appdaemon.adapi import ADAPI
 from appdaemon.events import EventCallback
 from appdaemon.plugins.hass.hassapi import Hass
 from appdaemon.state import StateCallback
+from appdaemon.services import ServiceCallback
 
 T = TypeVar("T")
 
@@ -143,17 +144,17 @@ class TypedHass(Hass, ABC):
 
     def set_value(
         self, entity_id: str, value: int | float, namespace: str | None = None
-    ) -> dict:
+    ) -> None:
         return super().set_value(entity_id, value, namespace=namespace)
 
     def set_textvalue(
         self, entity_id: str, value: str, namespace: str | None = None
-    ) -> dict:
+    ) -> None:
         return super().set_textvalue(entity_id, value, namespace=namespace)
 
     def select_option(
         self, entity_id: str, option: str, namespace: str | None = None
-    ) -> dict:
+    ) -> None:
         return super().select_option(entity_id, option, namespace=namespace)
 
     def last_pressed(self, button_id: str, namespace: str | None = None) -> datetime:
@@ -171,7 +172,7 @@ class TypedHass(Hass, ABC):
         name: str | None = None,
         namespace: str | None = None,
         **kwargs: Any,
-    ) -> dict:
+    ) -> None:
         return super().notify(
             message, title=title, name=name, namespace=namespace, **kwargs
         )
@@ -183,7 +184,7 @@ class TypedHass(Hass, ABC):
         hours: int | None = None,
         minutes: int | None = None,
         namespace: str | None = None,
-    ) -> list[dict[str, str | datetime]] | None:
+    ) -> list[dict[str, str | datetime]]:
         return super().get_calendar_events(
             entity_id=entity_id,
             days=days,
@@ -627,12 +628,20 @@ class TypedHass(Hass, ABC):
         self,
         service: str,
         namespace: str | None = None,
-        timeout: str | int | float | None = -1,
-        callback: Callable[[Any], Any] | None = None,
+        timeout: str | int | float | None = None,
+        callback: ServiceCallback | None = None,
+        hass_timeout: str | int | float | None = None,
+        suppress_log_messages: bool = False,
         **data: Any,
     ) -> Any:
         return super().call_service(
-            service, namespace=namespace, timeout=timeout, callback=callback, **data
+            service,
+            namespace=namespace,
+            timeout=timeout,
+            callback=callback,
+            hass_timeout=hass_timeout,
+            suppress_log_messages=suppress_log_messages,
+            **data,
         )
 
     def run_sequence(
@@ -673,7 +682,7 @@ class TypedHass(Hass, ABC):
     ) -> bool | dict[str, bool]:
         return super().cancel_listen_event(handle, silent=silent)
 
-    def info_listen_event(self, handle: str) -> tuple:
+    def info_listen_event(self, handle: str) -> bool:
         return super().info_listen_event(handle)
 
     def fire_event(
@@ -774,7 +783,7 @@ class TypedHass(Hass, ABC):
 
     @staticmethod
     def get_ad_version() -> str:
-        return Hass.get_ad_version()
+        return ADAPI.get_ad_version()
 
     def entity_exists(self, entity_id: str, namespace: str | None = None) -> bool:
         return super().entity_exists(entity_id, namespace=namespace)
@@ -787,7 +796,7 @@ class TypedHass(Hass, ABC):
 
     @staticmethod
     def split_device_list(devices: str) -> list[str]:
-        return Hass.split_device_list(devices)
+        return ADAPI.split_device_list(devices)
 
     def get_plugin_config(self, namespace: str | None = None) -> Any:
         return super().get_plugin_config(namespace=namespace)
@@ -826,4 +835,4 @@ class TypedHass(Hass, ABC):
 
     @staticmethod
     async def sleep(delay: float, result: Any = None) -> None:
-        return await Hass.sleep(delay, result=result)
+        return await ADAPI.sleep(delay, result=result)
