@@ -7,8 +7,8 @@ license = "MIT"
 readme = "README.md"
 packages = [
     { include = "appdaemon_aegis", from = "src" },
-    { include = "appdaemon_aegis/py.typed", from = "src" },
 ]
+include = ["appdaemon_aegis/py.typed"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
