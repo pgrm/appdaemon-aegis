@@ -13,6 +13,10 @@ appdaemon = "4.5.11"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.4"
 
+[tool.poetry.packages]
+include = "appdaemon_aegis"
+from = "src"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
