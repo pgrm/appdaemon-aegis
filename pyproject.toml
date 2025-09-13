@@ -11,7 +11,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-appdaemon = "~4.5.11"
+# TODO: Revert to appdaemon = "~4.5.12" once it is released
+appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "6c666ef5d8cdec67661e908bbc814eff8af342ef"}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.4"

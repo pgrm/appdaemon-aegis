@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from abc import ABC
 
-from .typed_hass import TypedHass
+from appdaemon.plugins.hass.hassapi import Hass
 
 
-class AegisApp(TypedHass, ABC):
+class AegisApp(Hass, ABC):
     """Base class to intuitively write tested, reliable, and maintainable AppDaemon apps."""
