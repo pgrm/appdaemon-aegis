@@ -34,11 +34,11 @@ pip install appdaemon-aegis
 
 ### Writing Your First App
 
-To create a new app, simply inherit from `aegis.AegisApp` instead of `hass.Hass`:
+To create a new app, simply inherit from `appdaemon-aegis.AegisApp` instead of `hass.Hass`:
 
 ```python
 # my_app.py
-from aegis import AegisApp
+from appdaemon-aegis import AegisApp
 
 class MyFirstApp(AegisApp):
     async def initialize(self):
@@ -47,22 +47,22 @@ class MyFirstApp(AegisApp):
         # Your automation logic here...
 ```
 
-### AppDaemon Configuration
+### Installation and Configuration
 
-To use your Aegis apps with AppDaemon, you need to make sure AppDaemon can find them. There are a couple of ways to do this:
+To use your Aegis apps with AppDaemon, you need to install Aegis and configure AppDaemon to find it. There are two main ways to do this:
 
 **1. Using a Virtual Environment (Recommended)**
 
-The recommended way to use Aegis is to create a virtual environment for your AppDaemon apps. This keeps your dependencies isolated and makes your project more portable.
+The recommended way to use Aegis is to let AppDaemon manage a virtual environment for your apps. This keeps your dependencies isolated.
 
-First, create a `requirements.txt` file in your AppDaemon `apps` directory:
+First, create a `requirements.txt` file in your AppDaemon `apps` directory and add `appdaemon-aegis` to it:
 
 ```
 appdaemon-aegis
 # any other dependencies you need
 ```
 
-Then, in your `appdaemon.yaml` file, add the following configuration:
+Then, in your `appdaemon.yaml` file, point to this file:
 
 ```yaml
 appdaemon:
@@ -75,9 +75,15 @@ appdaemon:
 
 **2. Manual Installation**
 
-If you prefer not to use a virtual environment, you can install Aegis manually in the same Python environment that AppDaemon is running in.
+If you prefer not to use a virtual environment, you can install Aegis manually in the same Python environment that AppDaemon is running in:
 
-Once you've installed Aegis, you can configure your apps in `apps.yaml` as you normally would:
+```bash
+pip install appdaemon-aegis
+```
+
+### Running your App
+
+Once Aegis is installed and available to AppDaemon, you can configure your apps in `apps.yaml` as you normally would:
 
 ```yaml
 # apps.yaml
