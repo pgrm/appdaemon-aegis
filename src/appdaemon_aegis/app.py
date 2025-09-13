@@ -3,13 +3,8 @@
 # SPDX-License-Identifier: MIT
 from __future__ import annotations
 
-import asyncio
-from abc import ABC
-from collections.abc import Callable, Coroutine, Iterable, Mapping
-from datetime import date, datetime, time, timedelta
-from logging import Logger
-from typing import Any, Literal, TypeVar
+from appdaemon.plugins.hass.hassapi import Hass
 
 
-class AegisApp(TypedHass, ABC):
+class AegisApp(Hass):
     """Base class to intuitively write tested, reliable, and maintainable AppDaemon apps."""

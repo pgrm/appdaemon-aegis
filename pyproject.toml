@@ -2,9 +2,7 @@
 name = "appdaemon-aegis"
 version = "0.1.0"
 description = "Strong and reliable automations for AppDaemon."
-authors = [
-  {name = "Peter Grman", email = "peter.grman@gmail.com"},
-]
+authors = ["Peter Grman <peter.grman@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [
@@ -13,7 +11,8 @@ packages = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-appdaemon = "~4.5.11"
+# TODO: Revert to appdaemon = "~4.5.12" once it is released
+appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "6c666ef5d8cdec67661e908bbc814eff8af342ef"}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.4"
