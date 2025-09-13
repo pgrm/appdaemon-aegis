@@ -7,6 +7,7 @@ license = "MIT"
 readme = "README.md"
 packages = [
     { include = "appdaemon_aegis", from = "src" },
+    { include = "appdaemon_aegis/py.typed", from = "src" },
 ]
 
 [tool.poetry.dependencies]
@@ -21,3 +22,10 @@ ruff = "^0.4.4"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
