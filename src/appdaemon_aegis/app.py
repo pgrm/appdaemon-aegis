@@ -3,10 +3,8 @@
 # SPDX-License-Identifier: MIT
 from __future__ import annotations
 
-from abc import ABC
-
 from appdaemon.plugins.hass.hassapi import Hass
 
 
-class AegisApp(Hass, ABC):
+class AegisApp(Hass):
     """Base class to intuitively write tested, reliable, and maintainable AppDaemon apps."""
