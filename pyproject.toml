@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "appdaemon-aegis"
+version = "0.1.0"
+description = "Strong and reliable automations for AppDaemon."
+authors = ["pgrm <pgrm@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+appdaemon = "^4.5.11"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.13.0"
+black = "^25.1.0"
+mypy = "^1.18.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+[[tool.mypy.overrides]]
+module = "appdaemon.*"
+ignore_missing_imports = true
