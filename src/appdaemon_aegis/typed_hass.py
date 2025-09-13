@@ -4,29 +4,21 @@
 from __future__ import annotations
 
 import asyncio
+from abc import ABC
 from collections.abc import Callable, Coroutine, Iterable, Mapping
 from datetime import date, datetime, time, timedelta
 from logging import Logger
 from typing import Any, Literal, TypeVar
 
-from typing import TYPE_CHECKING
-
 from appdaemon.adapi import ADAPI
+from appdaemon.events import EventCallback
 from appdaemon.plugins.hass.hassapi import Hass
-
-if TYPE_CHECKING:
-    import asyncio
-    from collections.abc import Callable, Coroutine, Iterable, Mapping
-    from datetime import date, datetime, time, timedelta
-    from logging import Logger
-
-    from appdaemon.events import EventCallback
-    from appdaemon.state import StateCallback
+from appdaemon.state import StateCallback
 
 T = TypeVar("T")
 
 
-class TypedHass(Hass):
+class TypedHass(Hass, ABC):
     """Strongly-typed abstract base class for AppDaemon apps."""
 
     # HASS API methods
@@ -83,10 +75,10 @@ class TypedHass(Hass):
     ) -> bool:
         return super().constrain_person(value)
 
-    def constrain_input_boolean(self, value: str | "Iterable[str]") -> bool:
+    def constrain_input_boolean(self, value: str | Iterable[str]) -> bool:
         return super().constrain_input_boolean(value)
 
-    def constrain_input_select(self, value: str | "Iterable[str]") -> bool:
+    def constrain_input_select(self, value: str | Iterable[str]) -> bool:
         return super().constrain_input_select(value)
 
     def get_service_info(self, service: str) -> dict | None:
@@ -111,12 +103,12 @@ class TypedHass(Hass):
         self,
         entity_id: str | list[str],
         days: int | None = None,
-        start_time: "datetime | str | None" = None,
-        end_time: "datetime | str | None" = None,
+        start_time: datetime | str | None = None,
+        end_time: datetime | str | None = None,
         minimal_response: bool | None = None,
         no_attributes: bool | None = None,
         significant_changes_only: bool | None = None,
-        callback: "Callable | None" = None,
+        callback: Callable | None = None,
         namespace: str | None = None,
     ) -> list[list[dict[str, Any]]] | None:
         return super().get_history(
@@ -134,12 +126,12 @@ class TypedHass(Hass):
     def get_logbook(
         self,
         entity: str | None = None,
-        start_time: "datetime | None" = None,
-        end_time: "datetime | None" = None,
+        start_time: datetime | None = None,
+        end_time: datetime | None = None,
         days: int | None = None,
-        callback: "Callable | None" = None,
+        callback: Callable | None = None,
         namespace: str | None = None,
-    ) -> list[dict[str, str | "datetime"]] | None:
+    ) -> list[dict[str, str | datetime]] | None:
         return super().get_logbook(
             entity=entity,
             start_time=start_time,
@@ -164,12 +156,12 @@ class TypedHass(Hass):
     ) -> dict:
         return super().select_option(entity_id, option, namespace=namespace)
 
-    def last_pressed(self, button_id: str, namespace: str | None = None) -> "datetime":
+    def last_pressed(self, button_id: str, namespace: str | None = None) -> datetime:
         return super().last_pressed(button_id, namespace=namespace)
 
     def time_since_last_press(
         self, button_id: str, namespace: str | None = None
-    ) -> "timedelta":
+    ) -> timedelta:
         return super().time_since_last_press(button_id, namespace=namespace)
 
     def notify(
@@ -191,7 +183,7 @@ class TypedHass(Hass):
         hours: int | None = None,
         minutes: int | None = None,
         namespace: str | None = None,
-    ) -> list[dict[str, str | "datetime"]] | None:
+    ) -> list[dict[str, str | datetime]] | None:
         return super().get_calendar_events(
             entity_id=entity_id,
             days=days,
@@ -310,14 +302,14 @@ class TypedHass(Hass):
 
     def listen_state(
         self,
-        callback: "StateCallback",
-        entity_id: str | "Iterable[str]" | None,
+        callback: StateCallback,
+        entity_id: str | Iterable[str] | None,
         namespace: str | None = None,
-        new: str | "Callable[[Any], bool]" | None = None,
-        old: str | "Callable[[Any], bool]" | None = None,
-        duration: str | int | float | "timedelta" | None = None,
+        new: str | Callable[[Any], bool] | None = None,
+        old: str | Callable[[Any], bool] | None = None,
+        duration: str | int | float | timedelta | None = None,
         attribute: str | None = None,
-        timeout: str | int | float | "timedelta" | None = None,
+        timeout: str | int | float | timedelta | None = None,
         immediate: bool = False,
         oneshot: bool = False,
         pin: bool | None = None,
@@ -356,7 +348,7 @@ class TypedHass(Hass):
     def get_tz_offset(self) -> float:
         return super().get_tz_offset()
 
-    def convert_utc(self, utc: str) -> "datetime":
+    def convert_utc(self, utc: str) -> datetime:
         return super().convert_utc(utc)
 
     def sun_up(self) -> bool:
@@ -372,7 +364,7 @@ class TypedHass(Hass):
         aware: bool = False,
         today: bool = False,
         days_offset: int = 0,
-    ) -> "time":
+    ) -> time:
         return super().parse_time(
             time_str, name=name, aware=aware, today=today, days_offset=days_offset
         )
@@ -384,12 +376,12 @@ class TypedHass(Hass):
         aware: bool = False,
         today: bool = False,
         days_offset: int = 0,
-    ) -> "datetime":
+    ) -> datetime:
         return super().parse_datetime(
             time_str, name=name, aware=aware, today=today, days_offset=days_offset
         )
 
-    def get_now(self, aware: bool = True) -> "datetime":
+    def get_now(self, aware: bool = True) -> datetime:
         return super().get_now(aware=aware)
 
     def get_now_ts(self, aware: bool = False) -> float:
@@ -402,21 +394,21 @@ class TypedHass(Hass):
 
     def sunrise(
         self, aware: bool = False, today: bool = False, days_offset: int = 0
-    ) -> "datetime":
+    ) -> datetime:
         return super().sunrise(aware=aware, today=today, days_offset=days_offset)
 
     def sunset(
         self, aware: bool = False, today: bool = False, days_offset: int = 0
-    ) -> "datetime":
+    ) -> datetime:
         return super().sunset(aware=aware, today=today, days_offset=days_offset)
 
-    def time(self) -> "time":
+    def time(self) -> time:
         return super().time()
 
-    def datetime(self, aware: bool = False) -> "datetime":
+    def datetime(self, aware: bool = False) -> datetime:
         return super().datetime(aware=aware)
 
-    def date(self) -> "date":
+    def date(self) -> date:
         return super().date()
 
     def get_timezone(self) -> str:
@@ -424,8 +416,8 @@ class TypedHass(Hass):
 
     def run_at(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
+        callback: Callable,
+        start: str | time | datetime | None = None,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -444,8 +436,8 @@ class TypedHass(Hass):
 
     def run_in(
         self,
-        callback: "Callable",
-        delay: str | int | float | "timedelta",
+        callback: Callable,
+        delay: str | int | float | timedelta,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -464,8 +456,8 @@ class TypedHass(Hass):
 
     def run_once(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
+        callback: Callable,
+        start: str | time | datetime | None = None,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -484,9 +476,9 @@ class TypedHass(Hass):
 
     def run_every(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
-        interval: str | int | float | "timedelta" = 0,
+        callback: Callable,
+        start: str | time | datetime | None = None,
+        interval: str | int | float | timedelta = 0,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -506,8 +498,8 @@ class TypedHass(Hass):
 
     def run_daily(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
+        callback: Callable,
+        start: str | time | datetime | None = None,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -526,8 +518,8 @@ class TypedHass(Hass):
 
     def run_hourly(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
+        callback: Callable,
+        start: str | time | datetime | None = None,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -546,8 +538,8 @@ class TypedHass(Hass):
 
     def run_minutely(
         self,
-        callback: "Callable",
-        start: str | "time" | "datetime" | None = None,
+        callback: Callable,
+        start: str | time | datetime | None = None,
         random_start: int | None = None,
         random_end: int | None = None,
         pin: bool | None = None,
@@ -566,7 +558,7 @@ class TypedHass(Hass):
 
     def run_at_sunset(
         self,
-        callback: "Callable",
+        callback: Callable,
         repeat: bool = True,
         offset: int | None = None,
         random_start: int | None = None,
@@ -588,7 +580,7 @@ class TypedHass(Hass):
 
     def run_at_sunrise(
         self,
-        callback: "Callable",
+        callback: Callable,
         repeat: bool = True,
         offset: int | None = None,
         random_start: int | None = None,
@@ -614,14 +606,14 @@ class TypedHass(Hass):
     def cancel_timer(self, handle: str, silent: bool = False) -> bool:
         return super().cancel_timer(handle, silent=silent)
 
-    def info_timer(self, handle: str) -> tuple["datetime", int, dict[str, Any]] | None:
+    def info_timer(self, handle: str) -> tuple[datetime, int, dict[str, Any]] | None:
         return super().info_timer(handle)
 
     def reset_timer(self, handle: str) -> bool:
         return super().reset_timer(handle)
 
     def register_service(
-        self, service: str, cb: "Callable", namespace: str | None = None, **kwargs: Any
+        self, service: str, cb: Callable, namespace: str | None = None, **kwargs: Any
     ) -> None:
         return super().register_service(service, cb, namespace=namespace, **kwargs)
 
@@ -636,7 +628,7 @@ class TypedHass(Hass):
         service: str,
         namespace: str | None = None,
         timeout: str | int | float | None = -1,
-        callback: "Callable"[[Any], Any] | None = None,
+        callback: Callable[[Any], Any] | None = None,
         **data: Any,
     ) -> Any:
         return super().call_service(
@@ -655,15 +647,15 @@ class TypedHass(Hass):
 
     def listen_event(
         self,
-        callback: "EventCallback",
+        callback: EventCallback,
         event: str | list[str] | None = None,
         *,
         namespace: str | None = None,
-        timeout: str | int | float | "timedelta" | None = None,
+        timeout: str | int | float | timedelta | None = None,
         oneshot: bool = False,
         pin: bool | None = None,
         pin_thread: int | None = None,
-        **kwargs: Any | "Callable"[[Any], bool],
+        **kwargs: Any | Callable[[Any], bool],
     ) -> str | list[str]:
         return super().listen_event(
             callback,
@@ -677,7 +669,7 @@ class TypedHass(Hass):
         )
 
     def cancel_listen_event(
-        self, handle: str | "Iterable[str]", *, silent: bool = False
+        self, handle: str | Iterable[str], *, silent: bool = False
     ) -> bool | dict[str, bool]:
         return super().cancel_listen_event(handle, silent=silent)
 
@@ -688,7 +680,7 @@ class TypedHass(Hass):
         self,
         event: str,
         namespace: str | None = None,
-        timeout: str | int | float | "timedelta" | None = -1,
+        timeout: str | int | float | timedelta | None = -1,
         **kwargs: Any,
     ) -> None:
         return super().fire_event(event, namespace=namespace, timeout=timeout, **kwargs)
@@ -702,7 +694,7 @@ class TypedHass(Hass):
         ascii_encode: bool | None = None,
         stack_info: bool = False,
         stacklevel: int = 1,
-        extra: "Mapping[str, object] | None" = None,
+        extra: Mapping[str, object] | None = None,
         **kwargs: Any,
     ) -> None:
         return super().log(
@@ -725,7 +717,7 @@ class TypedHass(Hass):
         ascii_encode: bool = True,
         stack_info: bool = False,
         stacklevel: int = 1,
-        extra: "Mapping[str, object] | None" = None,
+        extra: Mapping[str, object] | None = None,
         **kwargs: Any,
     ) -> None:
         return super().error(
@@ -741,7 +733,7 @@ class TypedHass(Hass):
 
     def listen_log(
         self,
-        callback: "Callable",
+        callback: Callable,
         level: str | int = "INFO",
         namespace: str = "admin",
         log: str | None = None,
@@ -762,13 +754,13 @@ class TypedHass(Hass):
     def cancel_listen_log(self, handle: str) -> None:
         return super().cancel_listen_log(handle)
 
-    def get_main_log(self) -> "Logger":
+    def get_main_log(self) -> Logger:
         return super().get_main_log()
 
-    def get_error_log(self) -> "Logger":
+    def get_error_log(self) -> Logger:
         return super().get_error_log()
 
-    def get_user_log(self, log: str) -> "Logger":
+    def get_user_log(self, log: str) -> Logger:
         return super().get_user_log(log)
 
     def set_log_level(self, level: str | int) -> None:
@@ -777,7 +769,7 @@ class TypedHass(Hass):
     def set_error_level(self, level: str | int) -> None:
         return super().set_error_level(level)
 
-    def get_app(self, name: str) -> "ADAPI":
+    def get_app(self, name: str) -> ADAPI:
         return super().get_app(name)
 
     @staticmethod
@@ -820,15 +812,15 @@ class TypedHass(Hass):
 
     def create_task(
         self,
-        coro: "Coroutine[Any, Any, T]",
-        callback: "Callable" | None = None,
+        coro: Coroutine[Any, Any, T],
+        callback: Callable | None = None,
         name: str | None = None,
         **kwargs: Any,
-    ) -> "asyncio.Task[T]":
+    ) -> asyncio.Task[T]:
         return super().create_task(coro, callback=callback, name=name, **kwargs)
 
     async def run_in_executor(
-        self, func: "Callable[..., T]", *args: Any, **kwargs: Any
+        self, func: Callable[..., T], *args: Any, **kwargs: Any
     ) -> T:
         return await super().run_in_executor(func, *args, **kwargs)
 
