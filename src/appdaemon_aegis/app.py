@@ -3,12 +3,9 @@
 # SPDX-License-Identifier: MIT
 from __future__ import annotations
 
-import asyncio
 from abc import ABC
-from collections.abc import Callable, Coroutine, Iterable, Mapping
-from datetime import date, datetime, time, timedelta
-from logging import Logger
-from typing import Any, Literal, TypeVar
+
+from .typed_hass import TypedHass
 
 
 class AegisApp(TypedHass, ABC):

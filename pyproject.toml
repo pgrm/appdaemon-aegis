@@ -2,9 +2,7 @@
 name = "appdaemon-aegis"
 version = "0.1.0"
 description = "Strong and reliable automations for AppDaemon."
-authors = [
-  {name = "Peter Grman", email = "peter.grman@gmail.com"},
-]
+authors = ["Peter Grman <peter.grman@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [
