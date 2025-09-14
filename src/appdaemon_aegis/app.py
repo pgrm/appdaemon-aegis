@@ -9,6 +9,7 @@ from typing import Any
 from uuid import UUID
 
 from appdaemon.plugins.hass.hassapi import Hass
+from appdaemon.plugins.mqtt.mqttapi import Mqtt
 
 from .payloads import LightCommandPayload
 from .types import StateType
@@ -48,13 +49,9 @@ class AegisApp(Hass, ABC):
     """Abstract base class for creating reliable, code-centric AppDaemon apps."""
 
     # --- Framework instance variables ---
-    # The MQTT plugin API is not typed in AppDaemon, so we use `Any`.
-    mqtt: Any
+    mqtt: Mqtt
     devices: dict[str, DeviceState]
     topic_to_object_id: dict[str, str]
-
-    # --- Typing for AppDaemon APIs ---
-    datetime: Callable[[], Awaitable[datetime]]
 
     def __init__(self, ad, name, logger, args, config, app_config, global_vars):
         super().__init__(ad, name, logger, args, config, app_config, global_vars)
