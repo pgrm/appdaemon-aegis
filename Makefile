@@ -1,3 +1,5 @@
+.SHELLFLAGS := -eu -o pipefail -c
+SHELL := /bin/bash
 .PHONY: help setup lint lint-check format format-check test ci all clean
 
 all: setup format lint test
