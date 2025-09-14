@@ -35,7 +35,7 @@ jobs:
         run: poetry run ruff format . --check --diff
 
       - name: Lint with ruff
-        run: poetry run ruff check . --format=github
+        run: poetry run ruff check . --output-format=github
 
       - name: Build distribution and verify metadata
         run: |
