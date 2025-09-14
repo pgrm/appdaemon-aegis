@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: false
+  commands:
+    check-format:
+      glob: "**/*.py"
+      run: poetry run ruff format {staged_files}
+      stage_fixed: true
+    lint:
+      glob: "**/*.py"
+      run: poetry run ruff check --fix {staged_files}
+      stage_fixed: true
