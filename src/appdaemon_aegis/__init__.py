@@ -1,5 +1,6 @@
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _version
+from typing import TYPE_CHECKING
 
 
 def __getattr__(name: str):
@@ -9,6 +10,14 @@ def __getattr__(name: str):
         return _AegisApp
     raise AttributeError(name)
 
+
+def __dir__():
+    return sorted(list(globals().keys()) + ["AegisApp"])
+
+
+if TYPE_CHECKING:
+    # Make the symbol visible to static type checkers without importing at runtime
+    from .app import AegisApp  # noqa: F401
 
 try:
     __version__ = _version("appdaemon-aegis")

@@ -35,11 +35,11 @@ jobs:
         run: |
           poetry install --no-interaction --no-ansi
 
-      - name: Format with ruff
-        run: poetry run ruff format . --check --diff
-
       - name: Lint with ruff
-        run: poetry run ruff check . --output-format=github
+        uses: astral-sh/ruff-action@v3
+
+      - name: Check formatting with ruff
+        run: ruff format . --check --diff # as suggested in https://github.com/astral-sh/ruff-action/issues/23
 
       - name: Build distribution and verify metadata
         if: matrix.python-version == '3.12'
