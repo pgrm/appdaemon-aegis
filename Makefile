@@ -2,11 +2,11 @@
 SHELL := /bin/bash
 .PHONY: help setup setup-ci lint lint-check format format-check test ci all clean ensure-poetry
 
+all: setup format lint test
+
 ensure-poetry:
 	@echo "Ensuring poetry is installed..."
 	@command -v poetry >/dev/null 2>&1 || { echo "Poetry not found. Install via: pipx install poetry"; exit 127; }
-
-all: setup format lint test
 
 clean:
 	@echo "Cleaning caches and build artifacts..."
@@ -25,6 +25,7 @@ help:
 
 setup: ensure-poetry
 	@echo "Setting up the development environment..."
+	@poetry env use python3.12
 	@poetry install --with dev
 	@poetry run lefthook install
 
