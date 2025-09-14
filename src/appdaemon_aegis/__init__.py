@@ -1,9 +1,15 @@
-from importlib.metadata import PackageNotFoundError, packages_distributions, version
+from importlib.metadata import PackageNotFoundError, version as _version
 
-from .app import AegisApp
+
+
+def __getattr__(name: str):
+    if name == "AegisApp":
+        from .app import AegisApp as _AegisApp
+        return _AegisApp
+    raise AttributeError(name)
 
 try:
-    __version__ = version("appdaemon-aegis")
+    __version__ = _version("appdaemon-aegis")
 except PackageNotFoundError:
     __version__ = "0.0.0"
 
