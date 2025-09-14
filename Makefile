@@ -6,7 +6,7 @@ all: setup format lint test
 
 clean:
 	@echo "Cleaning caches and build artifacts..."
-	@rm -rf .ruff_cache .pytest_cache .mypy_cache dist build .coverage
+	@rm -rf .ruff_cache .pytest_cache .mypy_cache dist build .coverage coverage.xml htmlcov
 
 help:
 	@echo "Commands:"
