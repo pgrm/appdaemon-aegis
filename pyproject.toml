@@ -43,6 +43,7 @@ select = ["E", "F", "I", "UP", "B", "C90", "SIM", "PERF"]
 pythonpath = [
   "src"
 ]
+asyncio_mode = "auto"
 testpaths = ["tests"]
 addopts = "-ra"
 xfail_strict = true
