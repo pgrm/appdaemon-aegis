@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: read
       pull-requests: write
@@ -38,14 +39,22 @@ jobs:
         run: poetry run ruff check . --output-format=github
 
       - name: Build distribution and verify metadata
+        if: matrix.python-version == '3.12'
         run: |
           python -m pip install --upgrade build twine
           python -m build
           python -m twine check dist/*
           python - <<'PY'
-          import zipfile,glob,sys
-          whl = sorted(glob.glob('dist/*.whl'))[-1]
-          with zipfile.ZipFile(whl) as z:
+          import zipfile, tarfile, glob
+          whls = sorted(glob.glob('dist/*.whl'))
+          assert whls, "No wheel found in dist/"
+          with zipfile.ZipFile(whls[-1]) as z:
             assert any(p.endswith('appdaemon_aegis/py.typed') for p in z.namelist()), "py.typed missing in wheel"
           print("OK: py.typed present in wheel")
+          sdists = sorted(glob.glob('dist/*.tar.gz'))
+          assert sdists, "No sdist found in dist/"
+          with tarfile.open(sdists[-1], 'r:gz') as t:
+            names = t.getnames()
+            assert any(p.endswith('appdaemon_aegis/py.typed') for p in names), "py.typed missing in sdist"
+          print("OK: py.typed present in sdist")
           PY
