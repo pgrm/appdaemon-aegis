@@ -43,3 +43,4 @@ known-first-party = ["appdaemon_aegis"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+xfail_strict = true
