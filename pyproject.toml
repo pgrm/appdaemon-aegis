@@ -47,3 +47,4 @@ xfail_strict = true
 filterwarnings = [
     "error::DeprecationWarning",
 ]
+strict_markers = true

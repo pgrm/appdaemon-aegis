@@ -23,14 +23,15 @@ help:
 	@echo "  test    		: Run tests."
 	@echo "  ci      		: Setup the CI environment and run all checks."
 
-setup:
+setup: ensure-poetry
 	@echo "Setting up the development environment..."
 	@poetry install --with dev
 	@poetry run lefthook install
 
-setup-ci:
+setup-ci: ensure-poetry
 	@echo "Setting up the CI environment..."
 	@poetry install --with dev --sync --no-interaction --no-ansi
+
 format:
 	@echo "Formatting the code..."
 	@poetry run ruff format .
