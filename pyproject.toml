@@ -22,7 +22,7 @@ appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "6c666ef5
 ruff = "^0.4.4"
 lefthook = "^1.6.0"
 pytest = "^8.0.0"
-pytest-cov = "^5.0.0"
+pytest-cov = "^6.0.0"
 
 
 [build-system]
