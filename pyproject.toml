@@ -37,3 +37,7 @@ quote-style = "double"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C90", "SIM", "PERF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

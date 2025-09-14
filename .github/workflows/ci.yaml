@@ -31,17 +31,8 @@ jobs:
           python -m pip install --upgrade pip && python -m pip install poetry
           poetry config virtualenvs.in-project true
 
-      - name: Install dependencies
-        run: |
-          poetry install --no-interaction --no-ansi
-
-      - name: Lint with ruff
-        uses: astral-sh/ruff-action@v3
-        with:
-          version: "0.12.12" # TODO: getting 404 for the latest 0.13.0 version
-
-      - name: Check formatting with ruff
-        run: ruff format . --check --diff # as suggested in https://github.com/astral-sh/ruff-action/issues/23
+      - name: Run CI Check
+        run: make ci
 
       - name: Build distribution and verify metadata
         if: matrix.python-version == '3.12'

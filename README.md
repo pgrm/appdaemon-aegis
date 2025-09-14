@@ -120,7 +120,7 @@ This project uses a `Makefile` to streamline common development tasks. Here are 
 - `make format`: Format the code using `ruff`.
 - `make lint`: Run linter checks using `ruff`.
 - `make test`: Run the test suite using `pytest`.
-- `make ci`: Run all CI checks (linting and testing).
+- `make ci`: Run all CI checks (formatting, linting, and testing).
 
 ## Contributing
 
