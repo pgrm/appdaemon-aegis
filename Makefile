@@ -25,7 +25,7 @@ setup:
 	@poetry run lefthook install
 
 setup-ci:
-	@echo "Setting up the ci environment..."
+	@echo "Setting up the CI environment..."
 	@poetry install --with dev
 
 format:
