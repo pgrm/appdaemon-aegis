@@ -8,17 +8,17 @@ AppDaemon Aegis is a Python framework that supercharges AppDaemon, providing str
 
 AppDaemon is a fantastic tool for writing automations in Python, but it can be challenging to work with, especially for larger and more complex setups. Aegis aims to solve these common pain points:
 
-* **Lack of Typing:** AppDaemon's dynamic nature can lead to runtime errors that are hard to debug. Aegis introduces strong typing to catch errors early.
-* **Difficult Testing:** Testing automations can be a real chore. Aegis provides a suite of testing helpers, including support for property-based testing, to make your automations more robust.
-* **Boilerplate Code:** Writing AppDaemon apps often involves a lot of repetitive boilerplate code. Aegis provides higher-level abstractions to reduce this boilerplate and let you focus on the automation logic.
+- **Lack of Typing:** AppDaemon's dynamic nature can lead to runtime errors that are hard to debug. Aegis introduces strong typing to catch errors early.
+- **Difficult Testing:** Testing automations can be a real chore. Aegis provides a suite of testing helpers, including support for property-based testing, to make your automations more robust.
+- **Boilerplate Code:** Writing AppDaemon apps often involves a lot of repetitive boilerplate code. Aegis provides higher-level abstractions to reduce this boilerplate and let you focus on the automation logic.
 
 ## Features ✨
 
-* **Strongly Typed:** Catch bugs before they happen with full type hinting for the AppDaemon API.
-* **Testable:** Write unit and integration tests for your automations with ease, with built-in support for `pytest` and `hypothesis`.
-* **Modern Python:** Write your automations using modern Python features like `async`/`await`.
-* **Extensible:** Aegis is designed to be extensible, so you can easily add your own helpers and abstractions.
-* **Focus on Automation:** Spend less time on boilerplate and more time creating the smart home of your dreams.
+- **Strongly Typed:** Catch bugs before they happen with full type hinting for the AppDaemon API.
+- **Testable:** Write unit and integration tests for your automations with ease, with built-in support for `pytest` and `hypothesis`.
+- **Modern Python:** Write your automations using modern Python features like `async`/`await`.
+- **Extensible:** Aegis is designed to be extensible, so you can easily add your own helpers and abstractions.
+- **Focus on Automation:** Spend less time on boilerplate and more time creating the smart home of your dreams.
 
 ## Getting Started
 
@@ -99,6 +99,7 @@ That's it! You're now ready to start crafting your smart home automations with A
 To set up a local development environment, you'll need [Poetry](https://python-poetry.org/docs/#installation) installed.
 
 1.  **Clone the repository:**
+
     ```bash
     git clone https://github.com/pgrm/appdaemon-aegis.git
     cd appdaemon-aegis
@@ -106,6 +107,7 @@ To set up a local development environment, you'll need [Poetry](https://python-p
 
 2.  **Set up the environment:**
     This command will install all dependencies and set up `lefthook` git hooks.
+
     ```bash
     make setup
     ```
@@ -114,11 +116,11 @@ To set up a local development environment, you'll need [Poetry](https://python-p
 
 This project uses a `Makefile` to streamline common development tasks. Here are the available commands:
 
-*   `make setup`: Set up the development environment.
-*   `make format`: Format the code using `ruff`.
-*   `make lint`: Run linter checks using `ruff`.
-*   `make test`: Run the test suite using `pytest`.
-*   `make ci`: Run all CI checks (linting and testing).
+- `make setup`: Set up the development environment.
+- `make format`: Format the code using `ruff`.
+- `make lint`: Run linter checks using `ruff`.
+- `make test`: Run the test suite using `pytest`.
+- `make ci`: Run all CI checks (linting and testing).
 
 ## Contributing
 
