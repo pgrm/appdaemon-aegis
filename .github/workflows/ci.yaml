@@ -42,3 +42,10 @@ jobs:
           python -m pip install --upgrade build twine
           python -m build
           python -m twine check dist/*
+          python - <<'PY'
+            import zipfile,glob,sys
+            whl = sorted(glob.glob('dist/*.whl'))[-1]
+            with zipfile.ZipFile(whl) as z:
+                assert any(p.endswith('appdaemon_aegis/py.typed') for p in z.namelist()), "py.typed missing in wheel"
+            print("OK: py.typed present in wheel")
+          PY
