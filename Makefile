@@ -1,6 +1,10 @@
 .SHELLFLAGS := -eu -o pipefail -c
 SHELL := /bin/bash
-.PHONY: help setup lint lint-check format format-check test ci all clean
+.PHONY: help setup setup-ci lint lint-check format format-check test ci all clean ensure-poetry
+
+ensure-poetry:
+	@echo "Ensuring poetry is installed..."
+	@command -v poetry >/dev/null 2>&1 || { echo "Poetry not found. Install via: pipx install poetry"; exit 127; }
 
 all: setup format lint test
 

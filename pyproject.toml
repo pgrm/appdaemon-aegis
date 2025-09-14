@@ -44,3 +44,6 @@ known-first-party = ["appdaemon_aegis"]
 testpaths = ["tests"]
 addopts = "-ra"
 xfail_strict = true
+filterwarnings = [
+    "error::DeprecationWarning",
+]
