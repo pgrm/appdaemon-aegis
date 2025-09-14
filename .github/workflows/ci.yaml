@@ -8,6 +8,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,8 +17,10 @@ jobs:
       contents: read
       pull-requests: write
     strategy:
+      max-parallel: 1
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
+
     steps:
       - uses: actions/checkout@v5
 
@@ -31,8 +34,19 @@ jobs:
           python -m pip install --upgrade pip && python -m pip install poetry
           poetry config virtualenvs.in-project true
 
+      - name: Cache poetry virtualenv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: ${{ runner.os }}-poetry-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-${{ matrix.python-version }}-
+
       - name: Run CI Check
         run: make ci
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
 
       - name: Build distribution and verify metadata
         if: matrix.python-version == '3.12'
