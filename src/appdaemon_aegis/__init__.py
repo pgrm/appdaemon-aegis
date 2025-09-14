@@ -3,6 +3,7 @@ from importlib.metadata import (
     version as _version,
 )
 
+
 def __getattr__(name: str):
     if name == "AegisApp":
         from .app import AegisApp as _AegisApp
