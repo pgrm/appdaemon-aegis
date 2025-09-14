@@ -35,7 +35,7 @@ class StepDimmedLight(AegisApp):
         switch_entity: EntityId,
         level_provider: LevelProvider,
         object_id: str | None = None,
-        steps: list[float] | list[int] = (0.25, 0.5, 1.0),
+        steps: tuple[float] | tuple[int] = (0.25, 0.5, 1.0),
         power_thresholds: list[float] | None = None,
         flick_delay: float = 0.055,
         stabilization_time: int = 5,
@@ -143,7 +143,7 @@ class StepDimmedLight(AegisApp):
             except Exception:
                 return None
 
-    def _normalize_steps(self, steps: list[float] | list[int]) -> list[int]:
+    def _normalize_steps(self, steps: tuple[float] | tuple[int]) -> list[int]:
         if not steps:
             raise ValueError("Steps cannot be empty.")
         normalized = []
