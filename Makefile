@@ -50,6 +50,6 @@ lint-check:
 
 test:
 	@echo "Running tests..."
-	@poetry run pytest --cov=src/appdaemon_aegis --cov-report=xml --cov-fail-under=100
+	@poetry run pytest --cov=src/appdaemon_aegis --cov-branch --cov-report=xml --cov-fail-under=100
 
 ci: setup-ci format-check lint-check test
