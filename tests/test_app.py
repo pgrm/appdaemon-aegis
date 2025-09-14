@@ -1,4 +1,4 @@
-"""Placeholder test file."""
+"""Smoke tests: verify package import and basic members."""
 
 
 def test_smoke_import():
