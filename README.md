@@ -94,6 +94,32 @@ my_first_app:
 
 That's it! You're now ready to start crafting your smart home automations with AppDaemon Aegis.
 
+## Development
+
+To set up a local development environment, you'll need [Poetry](https://python-poetry.org/docs/#installation) installed.
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/pgrm/appdaemon-aegis.git
+    cd appdaemon-aegis
+    ```
+
+2.  **Set up the environment:**
+    This command will install all dependencies and set up `lefthook` git hooks.
+    ```bash
+    make setup
+    ```
+
+### Development commands
+
+This project uses a `Makefile` to streamline common development tasks. Here are the available commands:
+
+*   `make setup`: Set up the development environment.
+*   `make format`: Format the code using `ruff`.
+*   `make lint`: Run linter checks using `ruff`.
+*   `make test`: Run the test suite using `pytest`.
+*   `make ci`: Run all CI checks (linting and testing).
+
 ## Contributing
 
 Contributions are welcome! If you have an idea for a new feature or have found a bug, please open an issue or submit a pull request.
