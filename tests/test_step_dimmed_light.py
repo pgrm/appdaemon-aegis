@@ -3,6 +3,7 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
+
 from appdaemon_aegis.payloads import LightCommandPayload
 from appdaemon_aegis.step_dimmed_light import StepDimmedLight
 
@@ -27,6 +28,7 @@ class TestLight(StepDimmedLight):
             level_provider="sensor.test_power",
             object_id="test_lamp_1",
         )
+
 
 @pytest.fixture
 def light(monkeypatch) -> TestLight:
@@ -59,6 +61,7 @@ def light(monkeypatch) -> TestLight:
     instance.initialize()
     return instance
 
+
 @pytest.mark.asyncio
 async def test_setup_and_registration(light):
     """Test that the app sets up and registers the device correctly."""
@@ -81,12 +84,14 @@ async def test_setup_and_registration(light):
         retain=True,
     )
 
+
 @pytest.mark.asyncio
 async def test_command_handling_turn_off(light):
     """Test the turn-off command."""
     payload = LightCommandPayload(state="OFF")
     await light._handle_dimmer_command(payload)
     light.turn_off.assert_called_once_with("switch.test_light")
+
 
 @pytest.mark.asyncio
 async def test_command_handling_set_brightness(light, monkeypatch):
@@ -104,6 +109,7 @@ async def test_command_handling_set_brightness(light, monkeypatch):
 
     # Should go from level 0 to level 2, which is 2 flicks
     light._perform_flicks.assert_called_once_with(2)
+
 
 @pytest.mark.asyncio
 async def test_state_publishing(light, monkeypatch):

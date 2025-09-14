@@ -124,7 +124,7 @@ class StepDimmedLight(AegisApp):
         current_power = await self._get_current_power_level()
         level_index = self._get_level_from_power(current_power)
 
-        brightness = self.max_brightness # Fallback
+        brightness = self.max_brightness  # Fallback
         if level_index != -1:
             brightness = self._brightness_levels[level_index]
 

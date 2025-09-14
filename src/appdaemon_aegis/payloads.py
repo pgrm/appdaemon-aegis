@@ -7,6 +7,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class LightCommandPayload:
     """A structured representation of a command payload for a light device."""
+
     state: str | None = None
     brightness: int | None = None
 
@@ -19,9 +20,9 @@ class LightCommandPayload:
         try:
             data = json.loads(raw_payload)
             if not isinstance(data, dict):
-                return cls() # Return empty payload if JSON is not a dict
+                return cls()  # Return empty payload if JSON is not a dict
         except json.JSONDecodeError:
-            return cls() # Return empty payload on parsing error
+            return cls()  # Return empty payload on parsing error
 
         state = data.get("state")
         brightness = data.get("brightness")

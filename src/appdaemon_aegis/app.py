@@ -18,6 +18,7 @@ from .types import StateType
 @dataclass
 class DeviceState:
     """Holds the state for a single managed device."""
+
     friendly_name: str
     command_callback: Callable[[LightCommandPayload], Awaitable[None]]
     state_payload: dict[str, str | int | bool] = field(default_factory=dict)
@@ -94,12 +95,19 @@ class AegisApp(Hass, ABC):
         self.topic_to_object_id[command_topic] = object_id
 
         config_payload = {
-            "name": friendly_name, "unique_id": object_id, "schema": "json",
-            "state_topic": f"{base_topic}/state", "command_topic": command_topic,
-            "availability_topic": availability_topic, "brightness": True,
+            "name": friendly_name,
+            "unique_id": object_id,
+            "schema": "json",
+            "state_topic": f"{base_topic}/state",
+            "command_topic": command_topic,
+            "availability_topic": availability_topic,
+            "brightness": True,
             "brightness_scale": 255,
-            "device": {"identifiers": [object_id], "name": friendly_name,
-                       "manufacturer": "AegisApp"},
+            "device": {
+                "identifiers": [object_id],
+                "name": friendly_name,
+                "manufacturer": "AegisApp",
+            },
         }
         self.mqtt.mqtt_publish(config_topic, json.dumps(config_payload), retain=True)
         self.mqtt.mqtt_publish(availability_topic, "online", retain=True)

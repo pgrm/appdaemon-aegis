@@ -9,6 +9,7 @@ class EntityId(str):
     A strongly-typed Home Assistant entity ID.
     Provides no extra functionality over a string, but improves type checking.
     """
+
     pass
 
 
