@@ -26,8 +26,7 @@ setup:
 
 setup-ci:
 	@echo "Setting up the CI environment..."
-	@poetry install --with dev
-
+	@poetry install --with dev --sync --no-interaction --no-ansi
 format:
 	@echo "Formatting the code..."
 	@poetry run ruff format .
