@@ -20,6 +20,9 @@ appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "6c666ef5
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.4"
+lefthook = "^1.6.0"
+pytest = "^8.0.0"
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -29,5 +32,19 @@ build-backend = "poetry.core.masonry.api"
 target-version = "py310"
 line-length = 100
 
+[tool.ruff.format]
+quote-style = "double"
+
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C90", "SIM", "PERF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["appdaemon_aegis"]
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+xfail_strict = true
+filterwarnings = [
+    "error::DeprecationWarning",
+]
+strict_markers = true
