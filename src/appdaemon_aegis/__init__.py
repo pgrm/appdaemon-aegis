@@ -1,7 +1,5 @@
-from importlib.metadata import (
-    PackageNotFoundError,
-    version as _version,
-)
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _version
 
 
 def __getattr__(name: str):
