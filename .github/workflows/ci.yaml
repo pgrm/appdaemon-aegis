@@ -32,10 +32,10 @@ jobs:
           poetry install --no-interaction --no-ansi
 
       - name: Format with ruff
-        run: poetry run ruff format --check --diff .
+        run: poetry run ruff format -- --check --diff .
 
       - name: Lint with ruff
-        run: poetry run ruff check --format=github
+        run: poetry run ruff check -- --format=github
 
       - name: Build distribution and verify metadata
         run: |
