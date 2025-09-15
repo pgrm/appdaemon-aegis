@@ -127,7 +127,7 @@ class AegisApp(Hass, ABC):
         validated_payload = payload.copy()
 
         for key, value in validated_payload.items():
-            if not isinstance(value, (str, int, bool)):
+            if not isinstance(value, str | int | bool):
                 self.log(
                     f"Invalid type for '{key}' in state payload for {object_id}", level="WARNING"
                 )

@@ -32,7 +32,7 @@ class LightCommandPayload:
 
         brightness = data.get("brightness")
         if brightness is not None:
-            if isinstance(brightness, (int, float)):
+            if isinstance(brightness, int | float):
                 brightness = int(brightness)
             elif isinstance(brightness, str):
                 try:
