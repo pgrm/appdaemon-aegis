@@ -159,3 +159,12 @@ async def test_on_mqtt_command_callback_error(app, monkeypatch):
     callback.assert_called_once()
     assert app.logger.log.call_args[0][0] == logging.ERROR
     assert app.logger.log.call_args[0][1] == "Error in command callback for light.test: test error"
+
+
+def test_light_handle_last_command_time(app):
+    """Test the last_command_time property of LightHandle."""
+    handle = app.register_light("light.test", "Test Light", AsyncMock())
+    assert handle.last_command_time is None
+    now = MagicMock()
+    app.devices["light.test"].last_command_time = now
+    assert handle.last_command_time == now

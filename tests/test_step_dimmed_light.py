@@ -262,3 +262,44 @@ async def test_perform_flicks_zero(light):
     light.turn_off.assert_not_called()
     light.turn_on.assert_not_called()
     light.sleep.assert_not_called()
+
+
+def test_configure_generates_power_thresholds(light):
+    """Test that power thresholds are generated if not provided."""
+    light.configure(
+        friendly_name="Test Lamp",
+        switch_entity="switch.test_light",
+        level_provider="sensor.test_power",
+        steps=[100, 200],
+    )
+    assert light.power_thresholds == [150.0]
+
+
+@pytest.mark.parametrize(
+    "power, expected_level",
+    [
+        (None, -1),
+        (5.0, 0),
+        (15.0, 1),
+        (25.0, 2),
+    ],
+)
+def test_get_level_from_power(light, power, expected_level):
+    """Test the _get_level_from_power calculation."""
+    light.power_thresholds = [10.0, 20.0]
+    assert light._get_level_from_power(power) == expected_level
+
+
+@pytest.mark.parametrize(
+    "brightness, expected_index",
+    [
+        (0, -1),
+        (50, 0),
+        (150, 1),
+        (255, 2),
+    ],
+)
+def test_get_level_from_brightness(light, brightness, expected_index):
+    """Test the _get_level_from_brightness calculation."""
+    light._brightness_levels = [64, 128, 255]
+    assert light._get_level_from_brightness(brightness) == expected_index
