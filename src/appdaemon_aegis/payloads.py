@@ -27,6 +27,8 @@ class LightCommandPayload:
         state = data.get("state")
         if isinstance(state, str):
             state = state.strip().lower()
+            if state not in ("on", "off"):
+                state = None  # TODO: Log this invalid state
         elif state is not None:
             state = None
 

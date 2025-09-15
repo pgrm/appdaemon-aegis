@@ -19,6 +19,7 @@ from appdaemon_aegis.payloads import LightCommandPayload
         ("invalid-json", None, None),
         ("[]", None, None),
         ('{"state": 123}', None, None),
+        ('{"state": "invalid"}', None, None),
         ('{"brightness": "invalid"}', None, None),
         ('{"state": null, "brightness": null}', None, None),
         ('{"brightness": []}', None, None),

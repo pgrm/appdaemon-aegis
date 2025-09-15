@@ -84,7 +84,7 @@ class StepDimmedLight(AegisApp):
     async def _handle_dimmer_command(self, payload: LightCommandPayload) -> None:
         """Handles a command from MQTT to change the light's state."""
         async with self._dimmer_lock:
-            if (payload.state and payload.state.upper() == "OFF") or (
+            if (payload.state == "off") or (
                 payload.brightness is not None and payload.brightness == 0
             ):
                 await self.turn_off(self.switch_entity)
@@ -124,7 +124,7 @@ class StepDimmedLight(AegisApp):
         is_on = await self.get_state(self.switch_entity) == "on"
 
         if not is_on:
-            self.light_handle.set_state(brightness=None, state="OFF")
+            self.light_handle.set_state(brightness=None, state="off")
             return
 
         current_power = await self._get_current_power_level()
@@ -134,7 +134,7 @@ class StepDimmedLight(AegisApp):
         if level_index != -1:
             brightness = self._brightness_levels[level_index]
 
-        self.light_handle.set_state(brightness=brightness, state="ON")
+        self.light_handle.set_state(brightness=brightness, state="on")
 
     # --- All the internal calculation logic ---
     async def _get_current_power_level(self) -> float | None:

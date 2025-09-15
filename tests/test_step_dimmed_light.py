@@ -102,7 +102,7 @@ async def test_setup_and_registration(light):
 @pytest.mark.asyncio
 async def test_command_handling_turn_off(light):
     """Test the turn-off command."""
-    payload = LightCommandPayload(state="OFF")
+    payload = LightCommandPayload(state="off")
     await light._handle_dimmer_command(payload)
     light.turn_off.assert_called_once_with("switch.test_light")
 
@@ -144,7 +144,7 @@ async def test_state_publishing(light, monkeypatch):
 
     await light._update_and_publish_state({})
 
-    light.light_handle.set_state.assert_called_once_with(brightness=255, state="ON")
+    light.light_handle.set_state.assert_called_once_with(brightness=255, state="on")
 
 
 def test_abstract_setup():
@@ -209,7 +209,7 @@ async def test_update_and_publish_state_off(light):
     light.get_state.return_value = "off"
     light.light_handle.set_state = MagicMock()
     await light._update_and_publish_state({})
-    light.light_handle.set_state.assert_called_once_with(brightness=None, state="OFF")
+    light.light_handle.set_state.assert_called_once_with(brightness=None, state="off")
 
 
 @pytest.mark.asyncio

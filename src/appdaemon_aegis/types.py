@@ -13,7 +13,7 @@ class EntityId(str):
     pass
 
 
-StateType = Literal["ON", "OFF"]
+StateType = Literal["on", "off"]
 """A type for the state of a light device."""
 
 
