@@ -69,34 +69,6 @@ def test_register_light_duplicate(app):
         app.register_light("light.test", "Test Light", AsyncMock())
 
 
-@pytest.mark.parametrize(
-    "payload",
-    [
-        {"brightness": "255"},  # Invalid type for brightness
-        {"state": 123.4},  # Invalid type for state
-        {"brightness": [1, 2, 3]},  # Invalid type for brightness
-    ],
-)
-def test_publish_device_state_validation(app, payload):
-    """Test that publish_device_state validates the payload."""
-    app.register_light("light.test", "Test Light", AsyncMock())
-    app.mqtt.mqtt_publish.reset_mock()  # Reset after registration
-    app.publish_device_state("light.test", payload)
-    app.mqtt.mqtt_publish.assert_not_called()
-
-
-def test_publish_device_state_no_change(app):
-    """Test that publish_device_state does not publish if the state is unchanged."""
-    app.register_light("light.test", "Test Light", AsyncMock())
-    app.mqtt.mqtt_publish.reset_mock()  # Reset after the initial registration publications
-
-    payload = {"state": "ON", "brightness": 128}
-    app.publish_device_state("light.test", payload)
-    app.mqtt.mqtt_publish.assert_called_once()  # First publication
-    app.mqtt.mqtt_publish.reset_mock()
-
-    app.publish_device_state("light.test", payload)
-    app.mqtt.mqtt_publish.assert_not_called()  # No second publication
 
 
 def test_terminate(app):
@@ -138,10 +110,6 @@ async def test_on_mqtt_command_missing_data(app, data):
     callback.assert_not_called()
 
 
-def test_publish_device_state_device_not_found(app):
-    """Test that publish_device_state handles device not found."""
-    app.publish_device_state("light.not_found", {"state": "ON"})
-    app.mqtt.mqtt_publish.assert_not_called()
 
 
 @pytest.mark.asyncio

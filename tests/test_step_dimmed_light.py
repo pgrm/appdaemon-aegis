@@ -139,12 +139,21 @@ async def test_state_publishing(light, monkeypatch):
     light.get_state.return_value = "on"
     monkeypatch.setattr(light, "_get_current_power_level", AsyncMock(return_value=200.0))
 
-    # Mock the handle's set_state to verify it's called correctly
-    light.light_handle.set_state = MagicMock()
-
     await light._update_and_publish_state({})
 
-    light.light_handle.set_state.assert_called_once_with(brightness=255, state="on")
+    expected_payload = json.dumps({"state": "on", "brightness": 255})
+    light.mqtt.mqtt_publish.assert_any_call(
+        "homeassistant/light/test_lamp_1/state", expected_payload, True
+    )
+
+
+@pytest.mark.asyncio
+async def test_set_state_no_change(light):
+    """Test that set_state does not publish if the state is unchanged."""
+    light.light_handle.set_state(brightness=128, state="on")
+    light.mqtt.mqtt_publish.reset_mock()
+    light.light_handle.set_state(brightness=128, state="on")
+    light.mqtt.mqtt_publish.assert_not_called()
 
 
 def test_abstract_setup():

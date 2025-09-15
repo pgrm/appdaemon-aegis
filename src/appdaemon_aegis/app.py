@@ -29,16 +29,32 @@ class DeviceState:
 class LightHandle:
     """A handle to a light device, returned by AegisApp.register_light."""
 
-    def __init__(self, app: AegisApp, object_id: str):
+    def __init__(
+        self,
+        app: AegisApp,
+        object_id: str,
+        publish_callback: Callable[[str, str, bool], None],
+    ):
         self._app = app
         self.object_id = object_id
+        self._publish = publish_callback
+        self.state_topic = f"homeassistant/light/{object_id}/state"
 
     def set_state(self, brightness: int | None, state: StateType) -> None:
         """Set the state of the light device."""
         payload = {"state": state}
         if brightness is not None:
             payload["brightness"] = brightness
-        self._app.publish_device_state(self.object_id, payload)
+
+        device = self._app.devices.get(self.object_id)
+        if not device:
+            return
+        if device.state_payload == payload:
+            return
+        device.state_payload = payload
+
+        self._publish(self.state_topic, json.dumps(payload), True)
+        self._app.log(f"Published state for {self.object_id}: {payload}")
 
     @property
     def last_command_time(self) -> datetime | None:
@@ -116,37 +132,9 @@ class AegisApp(Hass, ABC):
         self.mqtt.mqtt_subscribe(command_topic)
 
         self.log(f"Registered light '{friendly_name}' with command topic {command_topic}")
-        return LightHandle(self, object_id)
-
-    def publish_device_state(self, object_id: str, payload: dict[str, str | int | bool]) -> None:
-        """Publishes the state for a specific device, with validation."""
-        device = self.devices.get(object_id)
-        if not device:
-            return
-
-        validated_payload = payload.copy()
-
-        for key, value in validated_payload.items():
-            if not isinstance(value, str | int | bool):
-                self.log(
-                    f"Invalid type for '{key}' in state payload for {object_id}", level="WARNING"
-                )
-                return
-            if key == "brightness" and not isinstance(value, int):
-                self.log(
-                    f"Invalid type for 'brightness' in state payload for {object_id}",
-                    level="WARNING",
-                )
-                return
-
-        if device.state_payload == validated_payload:
-            return
-
-        device.state_payload = validated_payload
-        base_topic = f"homeassistant/light/{object_id}"
-        state_topic = f"{base_topic}/state"
-        self.mqtt.mqtt_publish(state_topic, json.dumps(validated_payload), retain=True)
-        self.log(f"Published state for {object_id}: {validated_payload}")
+        return LightHandle(
+            self, object_id, publish_callback=self.mqtt.mqtt_publish
+        )
 
     async def _on_mqtt_command(
         self, event_name: str, data: dict[str, Any], kwargs: dict[str, Any]
