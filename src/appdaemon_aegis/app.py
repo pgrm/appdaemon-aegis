@@ -128,10 +128,15 @@ class AegisApp(Hass, ABC):
 
         for key, value in validated_payload.items():
             if not isinstance(value, (str, int, bool)):
-                self.log(f"Invalid type for '{key}' in state payload for {object_id}", level="WARNING")
+                self.log(
+                    f"Invalid type for '{key}' in state payload for {object_id}", level="WARNING"
+                )
                 return
             if key == "brightness" and not isinstance(value, int):
-                self.log(f"Invalid type for 'brightness' in state payload for {object_id}", level="WARNING")
+                self.log(
+                    f"Invalid type for 'brightness' in state payload for {object_id}",
+                    level="WARNING",
+                )
                 return
 
         if device.state_payload == validated_payload:

@@ -24,7 +24,9 @@ from appdaemon_aegis.payloads import LightCommandPayload
         ('{"brightness": []}', None, None),
     ],
 )
-def test_from_json(raw_payload: str, expected_state: str | None, expected_brightness: int | None) -> None:
+def test_from_json(
+    raw_payload: str, expected_state: str | None, expected_brightness: int | None
+) -> None:
     """Test various scenarios for LightCommandPayload.from_json."""
     payload = LightCommandPayload.from_json(raw_payload)
     assert payload.state == expected_state

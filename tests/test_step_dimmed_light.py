@@ -235,9 +235,9 @@ async def test_debounce_state_update(light):
     [
         (-1, 0, 3, 1),  # Off to level 0
         (-1, 2, 3, 3),  # Off to level 2
-        (0, 2, 3, 2),   # Level 0 to 2
-        (2, 1, 3, 2),   # Level 2 to 1 (wraps around)
-        (1, 1, 3, 0),   # Same level
+        (0, 2, 3, 2),  # Level 0 to 2
+        (2, 1, 3, 2),  # Level 2 to 1 (wraps around)
+        (1, 1, 3, 0),  # Same level
     ],
 )
 def test_get_flicks(light, current_index, target_index, num_levels, expected_flicks):
