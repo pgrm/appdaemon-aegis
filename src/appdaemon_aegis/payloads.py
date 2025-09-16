@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 
+from .utils import get_safe_brightness
+
 
 @dataclass(frozen=True)
 class LightCommandPayload:
@@ -35,10 +37,10 @@ class LightCommandPayload:
         brightness = data.get("brightness")
         if brightness is not None:
             if isinstance(brightness, int | float):
-                brightness = int(brightness)
+                brightness = get_safe_brightness(brightness)
             elif isinstance(brightness, str):
                 try:
-                    brightness = int(float(brightness))
+                    brightness = get_safe_brightness(brightness)
                 except (ValueError, TypeError):
                     brightness = None
             else:

@@ -48,13 +48,13 @@ class StepDimmedLight(AegisApp):
         if not object_id:
             object_id = f"ad_{self.name}_{switch_entity}".replace(".", "_")
 
+        self._dimmer_lock = asyncio.Lock()
         self.light_handle = self.register_light(
             object_id=object_id,
             friendly_name=friendly_name,
             command_callback=self._handle_dimmer_command,
         )
 
-        self._dimmer_lock = asyncio.Lock()
         self.switch_entity = switch_entity
         self.level_provider = level_provider
         self.flick_delay = flick_delay
@@ -85,7 +85,7 @@ class StepDimmedLight(AegisApp):
         """Handles a command from MQTT to change the light's state."""
         async with self._dimmer_lock:
             if (payload.state == "off") or (
-                payload.brightness is not None and payload.brightness == 0
+                payload.brightness is not None and payload.brightness <= 0
             ):
                 await self.turn_off(self.switch_entity)
                 return
@@ -95,7 +95,7 @@ class StepDimmedLight(AegisApp):
                 target_brightness = payload.brightness
             target_index = self._get_level_from_brightness(target_brightness)
 
-            is_off = await self.get_state(self.switch_entity) == "off"
+            is_off = (await self.get_state(self.switch_entity)) == "off"
             current_index = -1
             if not is_off:
                 current_power = await self._get_current_power_level()
