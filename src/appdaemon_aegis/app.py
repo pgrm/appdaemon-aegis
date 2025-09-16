@@ -29,16 +29,32 @@ class DeviceState:
 class LightHandle:
     """A handle to a light device, returned by AegisApp.register_light."""
 
-    def __init__(self, app: AegisApp, object_id: str):
+    def __init__(
+        self,
+        app: AegisApp,
+        object_id: str,
+        publish_callback: Callable[[str, str, bool], None],
+    ):
         self._app = app
         self.object_id = object_id
+        self._publish = publish_callback
+        self.state_topic = f"homeassistant/light/{object_id}/state"
 
     def set_state(self, brightness: int | None, state: StateType) -> None:
         """Set the state of the light device."""
         payload = {"state": state}
         if brightness is not None:
             payload["brightness"] = brightness
-        self._app.publish_device_state(self.object_id, payload)
+
+        device = self._app.devices.get(self.object_id)
+        if not device:
+            return
+        if device.state_payload == payload:
+            return
+        device.state_payload = payload
+
+        self._publish(self.state_topic, json.dumps(payload), True)
+        self._app.log(f"Published state for {self.object_id}: {payload}")
 
     @property
     def last_command_time(self) -> datetime | None:
@@ -101,6 +117,8 @@ class AegisApp(Hass, ABC):
             "state_topic": f"{base_topic}/state",
             "command_topic": command_topic,
             "availability_topic": availability_topic,
+            "payload_available": "online",
+            "payload_not_available": "offline",
             "brightness": True,
             "brightness_scale": 255,
             "device": {
@@ -114,22 +132,7 @@ class AegisApp(Hass, ABC):
         self.mqtt.mqtt_subscribe(command_topic)
 
         self.log(f"Registered light '{friendly_name}' with command topic {command_topic}")
-        return LightHandle(self, object_id)
-
-    def publish_device_state(self, object_id: str, payload: dict[str, str | int | bool]) -> None:
-        """Publishes the state for a specific device."""
-        device = self.devices.get(object_id)
-        if not device:
-            return
-
-        if device.state_payload == payload:
-            return
-
-        device.state_payload = payload
-        base_topic = f"homeassistant/light/{object_id}"
-        state_topic = f"{base_topic}/state"
-        self.mqtt.mqtt_publish(state_topic, json.dumps(payload), retain=True)
-        self.log(f"Published state for {object_id}: {payload}")
+        return LightHandle(self, object_id, publish_callback=self.mqtt.mqtt_publish)
 
     async def _on_mqtt_command(
         self, event_name: str, data: dict[str, Any], kwargs: dict[str, Any]
@@ -157,6 +160,8 @@ class AegisApp(Hass, ABC):
         """Cleans up by making all registered devices unavailable."""
         for object_id in self.devices:
             base_topic = f"homeassistant/light/{object_id}"
+            command_topic = f"{base_topic}/set"
             availability_topic = f"{base_topic}/availability"
+            self.mqtt.mqtt_unsubscribe(command_topic)
             self.mqtt.mqtt_publish(availability_topic, "offline", retain=True)
         self.log("Set all registered devices to offline.")

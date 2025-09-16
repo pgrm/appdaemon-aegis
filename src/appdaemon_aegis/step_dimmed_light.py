@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 from uuid import UUID
 
@@ -28,6 +29,7 @@ class StepDimmedLight(AegisApp):
     _stabilization_time: int
     _manual_debounce_time: int
     _state_timer: UUID | None = None
+    _dimmer_lock: asyncio.Lock
 
     def configure(
         self,
@@ -46,6 +48,7 @@ class StepDimmedLight(AegisApp):
         if not object_id:
             object_id = f"ad_{self.name}_{switch_entity}".replace(".", "_")
 
+        self._dimmer_lock = asyncio.Lock()
         self.light_handle = self.register_light(
             object_id=object_id,
             friendly_name=friendly_name,
@@ -68,7 +71,7 @@ class StepDimmedLight(AegisApp):
             self.power_thresholds = self._generate_power_thresholds()
 
         self.listen_state(self._debounce_state_update, self.switch_entity)
-        if isinstance(self.level_provider, EntityId):
+        if not callable(self.level_provider):
             self.listen_state(self._debounce_state_update, self.level_provider)
 
     def setup(self) -> None:
@@ -80,23 +83,26 @@ class StepDimmedLight(AegisApp):
 
     async def _handle_dimmer_command(self, payload: LightCommandPayload) -> None:
         """Handles a command from MQTT to change the light's state."""
-        if payload.state and payload.state.upper() == "OFF":
-            await self.turn_off(self.switch_entity)
-            return
+        async with self._dimmer_lock:
+            if (payload.state == "off") or (
+                payload.brightness is not None and payload.brightness <= 0
+            ):
+                await self.turn_off(self.switch_entity)
+                return
 
-        target_brightness = self.max_brightness
-        if payload.brightness is not None:
-            target_brightness = payload.brightness
-        target_index = self._get_level_from_brightness(target_brightness)
+            target_brightness = self.max_brightness
+            if payload.brightness is not None:
+                target_brightness = payload.brightness
+            target_index = self._get_level_from_brightness(target_brightness)
 
-        is_off = await self.get_state(self.switch_entity) == "off"
-        current_index = -1
-        if not is_off:
-            current_power = await self._get_current_power_level()
-            current_index = self._get_level_from_power(current_power)
+            is_off = (await self.get_state(self.switch_entity)) == "off"
+            current_index = -1
+            if not is_off:
+                current_power = await self._get_current_power_level()
+                current_index = self._get_level_from_power(current_power)
 
-        num_flicks = self._get_flicks(current_index, target_index)
-        await self._perform_flicks(num_flicks)
+            num_flicks = self._get_flicks(current_index, target_index)
+            await self._perform_flicks(num_flicks)
 
     async def _debounce_state_update(self, *args: Any, **kwargs: Any) -> None:
         """Debounces state changes for manual interactions."""
@@ -118,7 +124,7 @@ class StepDimmedLight(AegisApp):
         is_on = await self.get_state(self.switch_entity) == "on"
 
         if not is_on:
-            self.light_handle.set_state(brightness=None, state="OFF")
+            self.light_handle.set_state(brightness=None, state="off")
             return
 
         current_power = await self._get_current_power_level()
@@ -128,19 +134,19 @@ class StepDimmedLight(AegisApp):
         if level_index != -1:
             brightness = self._brightness_levels[level_index]
 
-        self.light_handle.set_state(brightness=brightness, state="ON")
+        self.light_handle.set_state(brightness=brightness, state="on")
 
     # --- All the internal calculation logic ---
     async def _get_current_power_level(self) -> float | None:
-        if isinstance(self.level_provider, EntityId):
-            try:
-                return float(await self.get_state(self.level_provider))
-            except (ValueError, TypeError):
-                return None
-        else:
+        if callable(self.level_provider):
             try:
                 return await self.level_provider()
             except Exception:
+                return None
+        else:
+            try:
+                return float(await self.get_state(self.level_provider))
+            except (ValueError, TypeError):
                 return None
 
     def _normalize_steps(self, steps: tuple[float] | tuple[int]) -> list[int]:
@@ -151,7 +157,7 @@ class StepDimmedLight(AegisApp):
             for s in steps:
                 if not 0.0 <= s <= 1.0:
                     raise ValueError("Float steps must be between 0.0 and 1.0.")
-                normalized.append(int(s * self.max_brightness))
+                normalized.append(int(round(s * self.max_brightness)))
         elif all(isinstance(s, int) for s in steps):
             for s in steps:
                 if not 0 <= s <= self.max_brightness:
