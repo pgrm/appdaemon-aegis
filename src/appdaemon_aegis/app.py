@@ -132,9 +132,7 @@ class AegisApp(Hass, ABC):
         self.mqtt.mqtt_subscribe(command_topic)
 
         self.log(f"Registered light '{friendly_name}' with command topic {command_topic}")
-        return LightHandle(
-            self, object_id, publish_callback=self.mqtt.mqtt_publish
-        )
+        return LightHandle(self, object_id, publish_callback=self.mqtt.mqtt_publish)
 
     async def _on_mqtt_command(
         self, event_name: str, data: dict[str, Any], kwargs: dict[str, Any]

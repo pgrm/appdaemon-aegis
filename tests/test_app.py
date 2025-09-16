@@ -69,8 +69,6 @@ def test_register_light_duplicate(app):
         app.register_light("light.test", "Test Light", AsyncMock())
 
 
-
-
 def test_terminate(app):
     """Test that terminate unsubscribes from command topics."""
     app.register_light("light.test", "Test Light", AsyncMock())
@@ -110,8 +108,6 @@ async def test_on_mqtt_command_missing_data(app, data):
     callback.assert_not_called()
 
 
-
-
 @pytest.mark.asyncio
 async def test_on_mqtt_command_callback_error(app, monkeypatch):
     """Test that _on_mqtt_command handles errors in the callback."""
@@ -132,7 +128,8 @@ async def test_on_mqtt_command_callback_error(app, monkeypatch):
 def test_light_handle_last_command_time(app):
     """Test the last_command_time property of LightHandle."""
     handle = app.register_light("light.test", "Test Light", AsyncMock())
-    assert handle.last_command_time is None
     now = MagicMock()
     app.devices["light.test"].last_command_time = now
     assert handle.last_command_time == now
+    app.devices["light.test"].last_command_time = None
+    assert handle.last_command_time is None

@@ -44,6 +44,7 @@ def light(monkeypatch) -> TestLight:
     monkeypatch.setattr(instance, "listen_event", MagicMock())
     monkeypatch.setattr(instance, "listen_state", MagicMock())
     monkeypatch.setattr(instance, "run_in", MagicMock())
+    monkeypatch.setattr(instance, "cancel_timer", MagicMock())
     monkeypatch.setattr(instance, "turn_off", AsyncMock())
     monkeypatch.setattr(instance, "turn_on", AsyncMock())
     monkeypatch.setattr(instance, "sleep", AsyncMock())
@@ -237,6 +238,14 @@ async def test_debounce_state_update(light):
     light.datetime.return_value.__sub__.return_value.total_seconds.return_value = 10
     await light._debounce_state_update()
     light.run_in.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_debounce_state_update_cancels_timer(light):
+    """Test that debouncing cancels an existing timer."""
+    light._state_timer = "a-timer"  # Set a dummy timer
+    await light._debounce_state_update()
+    light.cancel_timer.assert_called_once_with("a-timer")
 
 
 @pytest.mark.parametrize(
