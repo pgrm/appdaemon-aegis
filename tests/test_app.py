@@ -133,3 +133,12 @@ def test_light_handle_last_command_time(app):
     assert handle.last_command_time == now
     app.devices["light.test"].last_command_time = None
     assert handle.last_command_time is None
+
+
+def test_light_handle_set_state_device_not_found(app):
+    """Test that LightHandle.set_state handles device not found."""
+    handle = app.register_light("light.test", "Test Light", AsyncMock())
+    app.mqtt.mqtt_publish.reset_mock()
+    del app.devices["light.test"]
+    handle.set_state(brightness=128, state="on")
+    app.mqtt.mqtt_publish.assert_not_called()
