@@ -51,7 +51,7 @@ Common tasks:
 - `make setup`: Sets up the development environment, installing dependencies and git hooks.
 - `make format`: Formats all code using Ruff.
 - `make lint`: Lints all code using Ruff, fixing issues where possible.
-- `make test`: Runs the pytest test suite and checks for 100% code coverage.
+- `make test`: Runs the pytest test suite. CI currently enforces ≥99% coverage via pytest-cov.
 - `make ci`: Runs all CI checks, including formatting, linting, and testing.
 
 ## Conventions
