@@ -1,6 +1,6 @@
 # Gemini Project Guide: AppDaemon Aegis
 
-This document is a guide for me, Gemini, to be the best possible assistant for this project.
+This document is a guide for, Gemini and other AI bots, to be the best possible assistant for this project.
 
 **Note:** This document should be kept up-to-date with our conversations as the project evolves and potentially the goals or priorities change. If those changes either aren't obvious based on the rest of the source code, or if the old information in this document contradicts the new changes in the repository, please update this file.
 
@@ -15,6 +15,12 @@ Key objectives:
 - **Maintainability:** Reduce boilerplate code by offering higher-level abstractions, allowing developers to focus on automation logic.
 - **Confidence:** Build a high-quality, well-tested library that developers can rely on for their own automations.
 
+### Supported platforms and scope
+
+- Supported Python: e.g., 3.11+ (update as appropriate)
+- Supported AppDaemon: e.g., >= 4.x (update as appropriate)
+- Non‑goals: direct device integrations, Home Assistant configuration management, or deployment tooling.
+ 
 ## Tech Stack and Tools
 
 - **AppDaemon:** The target framework that this library enhances.
@@ -22,6 +28,7 @@ Key objectives:
 - **Poetry:** For dependency management and packaging.
 - **pytest:** The testing framework.
 - **Ruff:** For linting and code formatting.
+- **mypy:** For static type checking
 - **Makefile:** For running common development tasks.
 - **Lefthook:** For Git hooks to ensure code quality before commits.
 - **GitHub Actions:** For continuous integration.
@@ -49,7 +56,7 @@ Common tasks:
 
 ## Conventions
 
-- **Testing:** All new features added to the framework must have corresponding unit tests. We are aiming for 100% test coverage to ensure reliability.
+- **Testing:** All new features must include unit tests. Target ≥95% overall coverage, with critical modules at 100%. Document any justified exclusions.
 - **Linting and Formatting:** All Python code must be formatted with `ruff format` and pass the linter checks defined in `pyproject.toml`. This is enforced by Lefthook pre-commit hooks.
 - **Commits and Branches:** Commit messages should be clear and descriptive. All work must be done in a dedicated feature branch, never directly on the `main` branch.
 - **Pull Requests:** When a feature branch is ready, it should be pushed to the remote repository and a pull request opened on GitHub. The CI pipeline must pass before a PR can be merged.
