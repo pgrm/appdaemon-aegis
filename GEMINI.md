@@ -28,7 +28,7 @@ Key objectives:
 - **Poetry:** For dependency management and packaging.
 - **pytest:** The testing framework.
 - **Ruff:** For linting and code formatting.
-- **mypy:** For static type checking
+- **mypy:** For static type checking.
 - **Makefile:** For running common development tasks.
 - **Lefthook:** For Git hooks to ensure code quality before commits.
 - **GitHub Actions:** For continuous integration.
