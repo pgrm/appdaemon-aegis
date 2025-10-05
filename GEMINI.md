@@ -61,6 +61,7 @@ Common tasks:
 - **Commits and Branches:** Commit messages should be clear and descriptive. All work must be done in a dedicated feature branch, never directly on the `main` branch.
 - **Pull Requests:** When a feature branch is ready, it should be pushed to the remote repository and a pull request opened on GitHub. The CI pipeline must pass before a PR can be merged.
 - **Make targets:** `make all` is developer-focused and may auto-fix (format/lint). `make ci` runs check-only equivalents for reproducible CI results.
+
 ## How you can help
 
 - **Developing the Aegis Framework:** Help me write new features and abstractions for the `AegisApp` base class to solve common AppDaemon pain points.
