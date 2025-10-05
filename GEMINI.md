@@ -56,7 +56,7 @@ Common tasks:
 
 ## Conventions
 
-- **Testing:** All new features must include unit tests. Target ≥95% overall coverage, with critical modules at 100%. Document any justified exclusions.
+- **Testing:** All new features must include unit tests. Target ≥99% overall coverage (CI-enforced), with critical modules at 100%. Document any justified exclusions.
 - **Linting and Formatting:** All Python code must be formatted with `ruff format` and pass the linter checks defined in `pyproject.toml`. This is enforced by Lefthook pre-commit hooks.
 - **Commits and Branches:** Commit messages should be clear and descriptive. All work must be done in a dedicated feature branch, never directly on the `main` branch.
 - **Pull Requests:** When a feature branch is ready, it should be pushed to the remote repository and a pull request opened on GitHub. The CI pipeline must pass before a PR can be merged.
