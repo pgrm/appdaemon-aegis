@@ -197,8 +197,8 @@ doc = ["myst-parser (>=4.0.0)", "pygments (>=2.14)", "pytest (>=8.3.2)", "pytest
 [package.source]
 type = "git"
 url = "https://github.com/AppDaemon/appdaemon.git"
-reference = "6c666ef5d8cdec67661e908bbc814eff8af342ef"
-resolved_reference = "6c666ef5d8cdec67661e908bbc814eff8af342ef"
+reference = "1e8c8699141e45f6bb8ebff5db3f2fa057e687d3"
+resolved_reference = "1e8c8699141e45f6bb8ebff5db3f2fa057e687d3"
 
 [[package]]
 name = "astral"
@@ -1864,4 +1864,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "14e3e362e3617c10ee272d0a4a9cf8c12a2bc4ae829edff23a91eac4b1290948"
+content-hash = "b2767684fdd87575bdd00991cc2b0a6fbf0ed8dcabd247077c273abe123063f7"
