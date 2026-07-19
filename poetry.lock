@@ -161,44 +161,39 @@ files = [
 
 [[package]]
 name = "appdaemon"
-version = "4.5.12"
+version = "4.5.14"
 description = "Apps for the Home Assistant home automation package."
 optional = false
-python-versions = "<3.13,>=3.10"
+python-versions = ">=3.10,<3.15"
 groups = ["main"]
 files = []
 develop = false
 
 [package.dependencies]
-aiohttp = ">=3.9.0,<3.12.0"
-aiohttp_jinja2 = ">=1.5.1,<1.7.0"
-astral = ">=3.2,<4.0"
-bcrypt = ">=4.0.1,<4.3.0"
-deepdiff = "8.2.0"
-feedparser = ">=6.0.10,<6.1.0"
-iso8601 = ">=1.1,<2.2"
-paho-mqtt = ">=1.6.1,<2.2.0"
-pid = ">=3.0.4,<3.1.0"
-pydantic = ">=2.10.6,<2.11.0"
-python-dateutil = ">=2.8.2,<2.10.0"
-python-socketio = ">=5.5,<5.12"
-pytz = ">=2022.7.1,<2025.2.0"
-pyyaml = ">=6.0.1,<6.1.0"
-requests = ">=2.28.2,<2.33.0"
-sockjs = ">=0.11,<0.14"
-tomli = "2.2.1"
-tomli_w = ">=1.0,<1.3"
-uvloop = {version = "0.21.0", markers = "sys_platform != \"win32\""}
-
-[package.extras]
-dev = ["build (>=1.2.1)", "gitpython (>=3.1.43)", "ipykernel (>=6.29.5)", "notebook (>=7.3.2)", "pre-commit (>=3.8.0)", "pytest (>=8.3.2)", "pytest-asyncio (>=1.0.0)", "rich (>=13.8.0)", "ruff (>=0.6.3)"]
-doc = ["myst-parser (>=4.0.0)", "pygments (>=2.14)", "pytest (>=8.3.2)", "pytest-asyncio (>=1.0.0)", "sphinx-autobuild (>=2021.3.14)", "sphinx-copybutton (>=0.5.2)", "sphinx-rtd-theme (>=3.0.2)", "sphinx-tabs (>=3.4.7)"]
+aiohttp = ">=3.9.0"
+aiohttp_jinja2 = ">=1.5.1"
+astral = ">=3.2"
+bcrypt = ">=4.0.1"
+deepdiff = ">=8.2.0"
+feedparser = ">=6.0.10"
+paho-mqtt = ">=1.6.1,<3"
+pid = ">=3.0.4"
+pydantic = ">=2.10.6,<3"
+python-dateutil = ">=2.8.2"
+python-socketio = ">=5.5"
+pytz = ">=2022.7.1"
+pyyaml = ">=6.0.1"
+requests = ">=2.28.2"
+sockjs = ">=0.11"
+tomli = ">=2.2.1"
+tomli_w = ">=1.0"
+uvloop = {version = ">=0.21.0", markers = "sys_platform != \"win32\""}
 
 [package.source]
 type = "git"
 url = "https://github.com/AppDaemon/appdaemon.git"
-reference = "6c666ef5d8cdec67661e908bbc814eff8af342ef"
-resolved_reference = "6c666ef5d8cdec67661e908bbc814eff8af342ef"
+reference = "b8b06ba7e39b19674c49c2e0d196f10f422a107c"
+resolved_reference = "b8b06ba7e39b19674c49c2e0d196f10f422a107c"
 
 [[package]]
 name = "astral"
@@ -698,18 +693,6 @@ groups = ["dev"]
 files = [
     {file = "iniconfig-2.1.0-py3-none-any.whl", hash = "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760"},
     {file = "iniconfig-2.1.0.tar.gz", hash = "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7"},
-]
-
-[[package]]
-name = "iso8601"
-version = "2.1.0"
-description = "Simple module to parse ISO 8601 dates"
-optional = false
-python-versions = ">=3.7,<4.0"
-groups = ["main"]
-files = [
-    {file = "iso8601-2.1.0-py3-none-any.whl", hash = "sha256:aac4145c4dcb66ad8b648a02830f5e2ff6c24af20f4f482689be402db2429242"},
-    {file = "iso8601-2.1.0.tar.gz", hash = "sha256:6b1d3829ee8921c4301998c909f7829fa9ed3cbdac0d3b16af2d743aed1ba8df"},
 ]
 
 [[package]]
@@ -1864,4 +1847,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "14e3e362e3617c10ee272d0a4a9cf8c12a2bc4ae829edff23a91eac4b1290948"
+content-hash = "8bb9125a2424d81df5606fcaf1c23097c00d6ec7036ec92f9896f5ecd4a25481"

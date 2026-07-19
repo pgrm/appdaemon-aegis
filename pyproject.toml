@@ -16,7 +16,7 @@ include = [
 python = ">=3.12,<3.13"
 # TODO: Revert to appdaemon = "~4.5.12" once it is released:
 # appdaemon = "~4.5.12"
-appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "6c666ef5d8cdec67661e908bbc814eff8af342ef"}
+appdaemon = {git = "https://github.com/AppDaemon/appdaemon.git", rev = "b8b06ba7e39b19674c49c2e0d196f10f422a107c"}
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.12.0"
