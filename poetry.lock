@@ -732,14 +732,18 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "lefthook"
-version = "1.13.0"
+version = "2.2.2"
 description = "Git hooks manager. Fast, powerful, simple."
 optional = false
 python-versions = ">=3.6"
 groups = ["dev"]
 files = [
-    {file = "lefthook-1.13.0-py3-none-any.whl", hash = "sha256:e823dafb007f82992d7bd13ff5c771ecb1b9b2c73a528479e5253b02212b2dfb"},
-    {file = "lefthook-1.13.0.tar.gz", hash = "sha256:a6b076024a69f395e428e86a543128e46a01133a083717a1cb9894b11c604ea3"},
+    {file = "lefthook-2.2.2-py3-none-macosx_10_15_x86_64.whl", hash = "sha256:43b0e8ee7c116f48f3f8d4d04074a526e01b44e04a093f66bd8791e78804b1f1"},
+    {file = "lefthook-2.2.2-py3-none-macosx_11_0_arm64.whl", hash = "sha256:96be288829fdaec6b3229724591ea0e3f16bb77b211fdd716af519c056ce11a9"},
+    {file = "lefthook-2.2.2-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:effd6f196a3b1563311761a22293d34863670c14cb87287c0b30d0323150249f"},
+    {file = "lefthook-2.2.2-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:a857391dabb8d9e039f3bf37097616fe8a729cdfb40a785d6ee55ebcf66b3845"},
+    {file = "lefthook-2.2.2-py3-none-win_amd64.whl", hash = "sha256:483864aa559e88e0803b7c3b020f5dbcfa14795e3479bf3a234411653a34544d"},
+    {file = "lefthook-2.2.2-py3-none-win_arm64.whl", hash = "sha256:fa6f5a0dee401516c47a9234896e9c39d32aef81f470adc771e832bc755e1d45"},
 ]
 
 [[package]]
@@ -1864,4 +1868,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "14e3e362e3617c10ee272d0a4a9cf8c12a2bc4ae829edff23a91eac4b1290948"
+content-hash = "12908a133dfb4e4b0f9c26d735b4fe88b61e49f2961d1bb60239c0559fdea8a3"
